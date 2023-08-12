@@ -4,11 +4,25 @@ This repository presents a simple implementation that aggregates multiple SQL re
 
 ```mermaid
 graph TD
-    A[Start Window] --> B[Collect SQL Requests]
-    B --> C[Insert into Trie]
-    C --> D[Merge SQL Requests]
-    D --> E[Query DB]
-    E --> F[End Window & Return Results]
+    subgraph SQL Multiplexer
+        A1[Incoming SQL Request 1] --> M[Merging Mechanism]
+        A2[Incoming SQL Request 2] --> M
+        A3[Incoming SQL Request 3] --> M
+        A4[Incoming SQL Request 4] --> M
+        A5[Incoming SQL Request 5] --> M
+        M --> Q[Merged SQL Query]
+    end
+
+    Q --> DB[Database]
+
+    subgraph Response Distributor
+        DB -- Response for Merged Query --> R1
+        R1 -- Extracted Response for Request 1 --> A1
+        R1 -- Extracted Response for Request 2 --> A2
+        R1 -- Extracted Response for Request 3 --> A3
+        R1 -- Extracted Response for Request 4 --> A4
+        R1 -- Extracted Response for Request 5 --> A5
+    end
 ```
 
 
